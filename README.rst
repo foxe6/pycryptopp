@@ -1,8 +1,11 @@
-﻿
-
 ===========================================================
  pycryptopp: a small number of good cryptography algorithms
 ===========================================================
+
+Notes
+========================
+
+This fork uses CBC_Mode instead
 
 Introduction and Licence
 ========================
