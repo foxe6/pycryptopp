@@ -1,5 +1,5 @@
 /**
- * aesmodule.cpp -- Python wrappers around Crypto++'s AES-CTR
+ * aesmodule.cpp -- Python wrappers around Crypto++'s AES-CBC
  */
 
 #define PY_SSIZE_T_CLEAN
@@ -29,13 +29,13 @@ typedef struct {
     PyObject_HEAD
 
     /* internal */
-    CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption * e;
+    CryptoPP::CBC_Mode<CryptoPP::AES>::Encryption * e;
 } AES;
 
 PyDoc_STRVAR(AES__doc__,
 "An AES cipher object.\n\
 \n\
-This object encrypts/decrypts in CTR mode, using a counter that is initialized\n\
+This object encrypts/decrypts in CBC mode, using a counter that is initialized\n\
 to zero when you instantiate the object.  Successive calls to .process() will\n\
 use the current counter value and increment it.\n\
 \n\
@@ -123,7 +123,7 @@ AES_init(PyObject* self, PyObject *args, PyObject *kwdict) {
         return -1;
     }
     try {
-        reinterpret_cast<AES*>(self)->e = new CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption(reinterpret_cast<const byte*>(key), keysize, reinterpret_cast<const byte*>(iv));
+        reinterpret_cast<AES*>(self)->e = new CryptoPP::CBC_Mode<CryptoPP::AES>::Encryption(reinterpret_cast<const byte*>(key), keysize, reinterpret_cast<const byte*>(iv));
     } catch (CryptoPP::InvalidKeyLength le) {
         PyErr_Format(aes_error, "Precondition violation: you are required to pass a valid key size.  Crypto++ gave this exception: %s", le.what());
         return -1;
